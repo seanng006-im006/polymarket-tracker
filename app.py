@@ -244,7 +244,9 @@ def compute_kyle(market_id, current_vol, current_prob, question, window_label, h
     if len(snaps) < 2: return None, None, None
 
     vol_gain   = current_vol - snaps[0]["volume"]
-    prob_shift = current_prob - snaps[0]["prob"]
+    old_prob   = snaps[0].get("prob")
+    if old_prob is None: return vol_gain, None, None
+    prob_shift = current_prob - old_prob
 
     if vol_gain <= 0 or abs(prob_shift) < 0.001: return vol_gain, prob_shift, None
 
