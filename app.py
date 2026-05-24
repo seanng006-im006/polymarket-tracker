@@ -17,9 +17,9 @@ st.markdown("""
     background:linear-gradient(90deg,#00f5c4,#7b61ff);
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin:0;
 }
-.hdr-sub { font-size:0.72rem; color:#444466; letter-spacing:0.1em; margin-top:2px; border-bottom:1px solid #1a1a3a; padding-bottom:0.8rem; }
+.hdr-sub { font-size:0.72rem; color:#8888aa; letter-spacing:0.1em; margin-top:2px; border-bottom:1px solid #1a1a3a; padding-bottom:0.8rem; }
 .mbox { background:#0d0d1f; border:1px solid #1a1a3a; border-radius:8px; padding:0.6rem 1rem; margin-bottom:0.5rem; }
-.mbox .lbl { font-size:0.65rem; color:#444466; letter-spacing:0.12em; text-transform:uppercase; }
+.mbox .lbl { font-size:0.65rem; color:#8888aa; letter-spacing:0.12em; text-transform:uppercase; }
 .mbox .val { font-size:1.3rem; font-weight:700; color:#e0e0ff; font-family:'Share Tech Mono',monospace; }
 .spike-panel { background:#120a0a; border:1px solid #ff3333; border-radius:10px; padding:0.8rem 1rem; margin-bottom:0.8rem; }
 .spike-title { font-size:0.65rem; color:#ff3333; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.4rem; }
@@ -29,16 +29,16 @@ st.markdown("""
 .card-hero { background:#0a0a1a; border:1px solid #1a1a3a; border-radius:14px; padding:1.3rem 1.5rem; margin-bottom:0.8rem; }
 .card-spike { border-color:#ff3333 !important; }
 .card-outlier { border-color:#ffaa00 !important; }
-.crank { font-size:0.62rem; color:#333355; font-family:'Share Tech Mono'; }
-.cq { font-size:0.88rem; font-weight:600; color:#c0c0e0; line-height:1.35; margin:3px 0 8px; }
-.cq-hero { font-size:1.1rem; font-weight:700; color:#d0d0f0; line-height:1.4; margin:4px 0 10px; }
-.ccat { font-size:0.65rem; color:#333355; letter-spacing:0.08em; margin-bottom:4px; }
+.crank { font-size:0.62rem; color:#7777aa; font-family:'Share Tech Mono'; }
+.cq { font-size:0.88rem; font-weight:600; color:#e0e0ff; line-height:1.35; margin:3px 0 8px; }
+.cq-hero { font-size:1.1rem; font-weight:700; color:#f0f0ff; line-height:1.4; margin:4px 0 10px; }
+.ccat { font-size:0.65rem; color:#9999bb; letter-spacing:0.08em; margin-bottom:4px; }
 .banner { border-radius:6px; padding:3px 10px; font-size:0.65rem; font-weight:700; letter-spacing:0.1em; margin-bottom:6px; display:inline-block; }
 .b-spike   { background:#2a0000; border:1px solid #ff3333; color:#ff4444; }
 .b-outlier { background:#1a1000; border:1px solid #ffaa00; color:#ffaa00; }
 .b-lambda  { background:#001a2a; border:1px solid #00aaff; color:#00aaff; }
 .yn { display:flex; align-items:center; gap:6px; margin:2px 0; }
-.yn-lbl { font-size:0.72rem; color:#666688; width:22px; }
+.yn-lbl { font-size:0.72rem; color:#9999bb; width:22px; }
 .yn-track { flex:1; height:4px; background:#111122; border-radius:2px; overflow:hidden; }
 .yn-fill-y { height:100%; background:#00f5a0; border-radius:2px; }
 .yn-fill-n { height:100%; background:#7b61ff; border-radius:2px; }
@@ -46,19 +46,19 @@ st.markdown("""
 .badges { display:flex; flex-wrap:wrap; gap:3px; margin:5px 0; }
 .badge { border-radius:4px; padding:1px 6px; font-size:0.65rem; font-weight:700; font-family:'Share Tech Mono'; white-space:nowrap; }
 .bv  { background:#0a2010; color:#00cc80; border:1px solid #00cc80; }
-.bv0 { background:#0d0d1f; color:#444466; border:1px solid #1a1a3a; }
+.bv0 { background:#0d0d1f; color:#8888aa; border:1px solid #1a1a3a; }
 .bu  { background:#0a2010; color:#00f5a0; border:1px solid #00f5a0; }
 .bd  { background:#200a0a; color:#ff5555; border:1px solid #ff5555; }
-.bn  { background:#0d0d1f; color:#444466; border:1px solid #1a1a3a; }
-.blbl { font-size:0.6rem; color:#444466; letter-spacing:0.08em; text-transform:uppercase; margin-right:3px; }
+.bn  { background:#0d0d1f; color:#8888aa; border:1px solid #1a1a3a; }
+.blbl { font-size:0.6rem; color:#8888aa; letter-spacing:0.08em; text-transform:uppercase; margin-right:3px; }
 .stats { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin:7px 0 4px; }
 .sbox { background:#070712; border-radius:5px; padding:4px 7px; }
-.slbl { font-size:0.58rem; color:#444466; letter-spacing:0.08em; text-transform:uppercase; }
-.sval { font-size:0.85rem; font-weight:700; color:#c0c0e0; font-family:'Share Tech Mono'; }
+.slbl { font-size:0.58rem; color:#8888aa; letter-spacing:0.08em; text-transform:uppercase; }
+.sval { font-size:0.85rem; font-weight:700; color:#e0e0ff; font-family:'Share Tech Mono'; }
 .meta { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
-.mlbl { font-size:0.58rem; color:#444466; letter-spacing:0.08em; text-transform:uppercase; }
-.mval { font-size:0.78rem; color:#888899; font-family:'Share Tech Mono'; }
-.sec { font-size:0.65rem; color:#333355; letter-spacing:0.15em; text-transform:uppercase; margin:0.8rem 0 0.4rem; border-top:1px solid #0d0d1f; padding-top:0.6rem; }
+.mlbl { font-size:0.58rem; color:#8888aa; letter-spacing:0.08em; text-transform:uppercase; }
+.mval { font-size:0.78rem; color:#aaaacc; font-family:'Share Tech Mono'; }
+.sec { font-size:0.65rem; color:#7777aa; letter-spacing:0.15em; text-transform:uppercase; margin:0.8rem 0 0.4rem; border-top:1px solid #0d0d1f; padding-top:0.6rem; }
 div[data-testid="stMetricValue"] { font-size:1.2rem !important; }
 </style>
 """, unsafe_allow_html=True)
@@ -288,7 +288,7 @@ def card_html(m, rank, spikes, is_hero=False):
             f'<span class="yn-pct">{p*100:.0f}%</span></div>'
             for o,p in pairs[:4])
     else:
-        yn='<span style="color:#444466;font-size:0.72rem;">No data</span>'
+        yn='<span style="color:#8888aa;font-size:0.72rem;">No data</span>'
 
     # vol badges
     vb='<div class="badges"><span class="blbl">VOL Δ</span>'
