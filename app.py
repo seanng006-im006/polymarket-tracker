@@ -414,4 +414,4 @@ for row in rows_:
                        unsafe_allow_html=True)
 
 if auto_refresh:
-    time.sleep(60); st.rerun()
+    time.sleep(60); st.rerun() 
