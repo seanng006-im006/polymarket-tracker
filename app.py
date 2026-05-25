@@ -65,10 +65,10 @@ div[data-testid="stMetricValue"] { font-size:1.2rem !important; }
 
 GAMMA_API    = "https://gamma-api.polymarket.com"
 CLOB_API     = "https://clob.polymarket.com"
-SUPABASE_URL = "https://llwpjeokrxfuingxiksk.supabase.co"
-SUPABASE_KEY = "sb_publishable_ovPph4WdVncPNq6AHztH_A_Ng8SlHlv"
-TG_TOKEN     = "8973431939:AAF0HEC13sfGTO_d8-K5UU_DNlWPwyFL8wI"
-TG_CHAT_ID   = "8928074857"
+SUPABASE_URL = st.secrets["SUPABASE_URL"]
+SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+TG_TOKEN     = st.secrets["TG_TOKEN"]
+TG_CHAT_ID   = st.secrets["TG_CHAT_ID"]
 REFRESH_8H   = 8 * 3600
 VOL_THRESHOLDS = {"1h":100_000,"3h":250_000,"6h":500_000,"24h":2_000_000}
 
@@ -253,7 +253,7 @@ def card_html(m, rank, spikes, is_hero=False):
     ps_7d=prob_shift_clob(token_id,"1w") if token_id else None
 
     has_spike=any(s["market_id"]==mid for s in spikes
-        if (datetime.utcnow()-datetime.fromisoformat(s["ts"])).seconds<10800)
+        if (datetime.utcnow()-datetime.fromisoformat(s["ts"].replace("Z","").split("+")[0])).seconds<10800)
     has_lam=any(v is not None for v in lams.values())
     pp_vals=[v for v in [ps.get("1h"),ps.get("6h"),ps.get("24h")] if v is not None]
     has_outlier=False
@@ -380,7 +380,7 @@ for col,lbl,val in [(c1,"MARKETS","10"),(c2,"24H VOLUME",fmt_vol(total_24h)),
 if spikes:
     rows=""
     for sp in spikes[:5]:
-        age=datetime.utcnow()-datetime.fromisoformat(sp["ts"])
+        age=datetime.utcnow()-datetime.fromisoformat(sp["ts"].replace("Z","").split("+")[0])
         age_str=f"{int(age.seconds/60)}m ago" if age.seconds<3600 else f"{int(age.seconds/3600)}h ago"
         ps=sp.get("prob_shift") or 0
         col="#00f5a0" if ps>0 else "#ff5555"
