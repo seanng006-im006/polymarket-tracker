@@ -385,18 +385,28 @@ for col,lbl,val in [(c1,"MARKETS","10"),(c2,"24H VOLUME",fmt_vol(total_24h)),
                  unsafe_allow_html=True)
 
 if spikes:
+    # Group spikes by market_id
+    from collections import defaultdict as _dd
+    grouped = _dd(list)
+    for sp in spikes:
+        grouped[sp["market_id"]].append(sp)
+
     rows=""
-    for sp in spikes[:5]:
-        age=datetime.utcnow()-datetime.fromisoformat(sp["ts"].replace("Z","").split("+")[0])
-        age_str=f"{int(age.seconds/60)}m ago" if age.seconds<3600 else f"{int(age.seconds/3600)}h ago"
-        ps=sp.get("prob_shift") or 0
-        col="#00f5a0" if ps>0 else "#ff5555"
-        rows+=(f'<div class="spike-row">'
-               f'<span style="color:#ff3333;font-weight:700;font-family:\'Share Tech Mono\'">⚡ +{fmt_vol(sp["vol_gain"])}</span>'
-               f'<span style="color:#666;font-size:0.7rem"> · {sp.get("win","?")}w · {age_str}</span>'
-               f'<span style="color:{col};font-weight:700"> {"▲" if ps>0 else "▼"}{abs(ps*100):.1f}%</span><br>'
-               f'<span style="color:#aaaacc;font-size:0.78rem">{sp["question"][:70]}{"…" if len(sp["question"])>70 else ""}</span>'
-               f'</div>')
+    win_order = ["1h","3h","6h","24h"]
+    for mid_key, mspikes in list(grouped.items())[:5]:
+        latest = sorted(mspikes, key=lambda x: x["ts"])[-1]
+        age = datetime.utcnow()-datetime.fromisoformat(latest["ts"].replace("Z","").split("+")[0])
+        age_str = f"{int(age.seconds/60)}m ago" if age.seconds<3600 else f"{int(age.seconds/3600)}h ago"
+        q = latest["question"][:70]+("…" if len(latest["question"])>70 else "")
+        sorted_spikes = sorted(mspikes, key=lambda x: win_order.index(x.get("win","24h")) if x.get("win") in win_order else 99)
+        vb = "".join(f'<span style="background:#0a2010;color:#00cc80;border:1px solid #00cc80;border-radius:4px;padding:1px 6px;font-size:0.65rem;font-weight:700;font-family:Share Tech Mono;margin-right:3px;">+{fmt_vol(s.get("vol_gain",0))} {s.get("win","?")}</span>' for s in sorted_spikes)
+        pb = "".join(f'<span style="background:#0a1020;color:{"#00f5a0" if (s.get("prob_shift") or 0)>0 else "#ff5555"};border:1px solid {"#00f5a0" if (s.get("prob_shift") or 0)>0 else "#ff5555"};border-radius:4px;padding:1px 6px;font-size:0.65rem;font-weight:700;font-family:Share Tech Mono;margin-right:3px;">{"+" if (s.get("prob_shift") or 0)>0 else ""}{(s.get("prob_shift") or 0)*100:.1f}% {s.get("win","?")}</span>' for s in sorted_spikes)
+        rows += (f'<div class="spike-row">'
+                 f'<span style="color:#ff3333;font-weight:700;font-size:0.82rem;">⚡ {q}</span>'
+                 f'<span style="color:#666;font-size:0.7rem;margin-left:6px;">{age_str}</span><br>'
+                 f'<div style="margin:3px 0;">{vb}</div>'
+                 f'<div style="margin:2px 0;">{pb}</div>'
+                 f'</div>')
     st.markdown(f'<div class="spike-panel"><div class="spike-title">⚡ spike log — last 24h</div>{rows}</div>',
                 unsafe_allow_html=True)
 
@@ -414,4 +424,4 @@ for row in rows_:
                        unsafe_allow_html=True)
 
 if auto_refresh:
-    time.sleep(60); st.rerun() 
+    time.sleep(60); st.rerun()
