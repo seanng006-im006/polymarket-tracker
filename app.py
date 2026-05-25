@@ -296,7 +296,7 @@ def card_html(m, rank, spikes, is_hero=False):
         yn='<span style="color:#8888aa;font-size:0.72rem;">No data</span>'
 
     # vol badges
-    vb='<div class="badges"><span class="blbl">VOL Δ</span>'
+    vb='<div class="badges"><span class="blbl">VOL &Delta;</span>'
     for wl in ["1h","3h","6h","24h"]:
         v=vg.get(wl)
         if v and v>0: vb+=f'<span class="badge bv">+{fmt_vol(v)} {wl}</span>'
