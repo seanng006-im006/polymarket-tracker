@@ -224,6 +224,21 @@ def fetch_top10():
     r.raise_for_status()
     return r.json()
 
+def get_vol_prob_deltas(mid, cur_vol, cur_prob):
+    """Read vol and prob deltas from Supabase snapshots."""
+    vg, ps = {}, {}
+    for win_label, hours in [("1h",1),("3h",3),("6h",6),("24h",24)]:
+        snaps = get_snaps(mid, hours)
+        if len(snaps) < 2:
+            vg[win_label] = None
+            ps[win_label] = None
+            continue
+        v_gain = cur_vol - snaps[0]["volume"]
+        old_prob = snaps[0].get("prob")
+        vg[win_label] = v_gain if v_gain > 0 else None
+        ps[win_label] = (cur_prob - old_prob) if old_prob is not None else None
+    return vg, ps
+
 def card_html(m, rank, spikes, is_hero=False):
     question = m.get("question","Unknown")
     cat      = m.get("groupItemTitle") or m.get("category") or ""
@@ -253,8 +268,21 @@ def card_html(m, rank, spikes, is_hero=False):
 
     vg,ps,lams={},{},{}
     for wl,wh in [("1h",1),("3h",3),("6h",6),("24h",24)]:
-        v,p,l=compute_kyle(mid,cur_vol,cur_prob,question,wl,wh)
-        vg[wl]=v; ps[wl]=p; lams[wl]=l
+        snaps=get_snaps(mid,wh)
+        if len(snaps)>=2:
+            v_gain=cur_vol-snaps[0]["volume"]
+            old_prob=snaps[0].get("prob")
+            vg[wl]=v_gain if v_gain>0 else None
+            ps[wl]=(cur_prob-old_prob) if old_prob is not None else None
+            # Kyle lambda check
+            if v_gain>0 and old_prob is not None and abs(cur_prob-old_prob)>0.001:
+                lam=abs(cur_prob-old_prob)/v_gain
+                hist=get_lambdas(mid)
+                lams[wl]=lam if (len(hist)>=5 and lam>sum(hist)/len(hist)*1.5) else None
+            else:
+                lams[wl]=None
+        else:
+            vg[wl]=None; ps[wl]=None; lams[wl]=None
 
     ps_7d=prob_shift_clob(token_id,"1w") if token_id else None
 
@@ -353,19 +381,8 @@ try: markets=fetch_top10()
 except Exception as e:
     st.error(f"API error: {e}"); st.stop()
 
-now_ts=time.time()
-if (now_ts-st.session_state.last_poll)>60:
-    for m in markets:
-        mid=m.get("conditionId") or m.get("id") or m.get("slug","")
-        vol=float(m.get("volume",0))
-        liq=float(m.get("liquidity") or m.get("liquidityClob") or 0)
-        end=m.get("endDate") or m.get("endDateIso","")
-        pairs=parse_outcomes(m)
-        y,_=yes_no(pairs)
-        prob=y if y is not None else (pairs[0][1] if pairs else 0.5)
-        if mid: save_snapshot(mid,vol,prob,m.get("question",""),end,liq)
-    cleanup()
-    st.session_state.last_poll=now_ts
+# Data collection handled by GitHub Actions collector
+# Streamlit only reads from Supabase
 
 spikes=get_spikes()
 total_24h=sum(float(m.get("volume24hr",0)) for m in markets)
