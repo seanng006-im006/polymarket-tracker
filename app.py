@@ -263,7 +263,7 @@ def card_html(m, rank, spikes, is_hero=False):
             end_str=dt.strftime("%b %d, %Y")
         except: end_str=end_date[:10]
 
-    cur_vol  = float(m.get("volume",0))
+    cur_vol  = float(m.get("volume24hr",0))  # use 24h vol to match collector
     cur_prob = yes if yes is not None else (pairs[0][1] if pairs else 0.5)
 
     vg,ps,lams={},{},{}
